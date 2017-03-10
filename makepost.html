@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head lang="en">
+   		<meta charset="utf-8">
+   		<title>R3DLINE</title>
+   		<link rel="stylesheet" type="text/css"
+          href="https://fonts.googleapis.com/css?family=Lato">
+   		<link rel="stylesheet" href="style/all.css" />
+   		<link rel="stylesheet" href="style/simpleform.css" />
+
+   		<!-- https://www.tinymce.com/download/ -->
+		<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+ 		<script>
+  			tinymce.init({
+    			selector: '#mytextarea',
+    			plugins: "image",
+  				menubar: "insert",
+  				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+  				image_caption: true
+ 			});
+  		</script>
+	</head>
+	<body>
+		<header>
+			<h1><a href="home.html">R3DLINE</a></h1>
+			<ul>
+				<li><a href="login.html">Login</a></li>
+				<li><a href="register.html">Register</a></li>
+			</ul>
+		</header>
+		<div id="main">
+			<article id="right-sidebar">
+				<div id="sidebar-search">
+					<form action="home.html" method="get">
+						<input type="text" placeholder="Enter a search term">
+						<button type="submit">Search</button>
+					</form>
+					<p><a href="">Advanced Search</a></p>
+				</div>
+				<button type="button">Submit a Post</button>
+				<br>
+				<p><a href="">Browse Forums</a></p>
+				<br>
+				<p><a href="">My Subscribed</a></p>
+				<div id="forum-info">
+					<p>Welcome to R3DLINE, your ultimate source for BMW E30s. Please read our rules and guidelines blah blah blah more forum information stuff</p>
+				</div>
+			</article>
+			<article id="center">
+				<div class="container">
+					<h2>Posting in Engines/M20</h2>
+					<form method="post" action="" id="post-form">
+						<fieldset>
+							<label><b>Title</b></label>
+							<input type="text" name="title"/>
+
+							<label><b>Content</b></label>
+							<textarea id="mytextarea" form="post-form"></textarea>
+
+							<button type="Submit">Submit</button>
+						</fieldset>
+					</form>
+				</div>
+			</article>
+		</div>
+		<footer>
+			<p>Colin Bernard 2017</p>
+		</footer>
+	</body>
+</html>
