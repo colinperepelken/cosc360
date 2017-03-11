@@ -8,6 +8,7 @@
    		<link rel="stylesheet" href="style/all.css" />
    		<link rel="stylesheet" href="style/simpleform.css" />
    		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+   		<script type="text/javascript" src="js/login.js"></script>
 	</head>
 	<body>
 		<header>
@@ -20,17 +21,17 @@
 
 		<div id="login">
 		<h2>Login Form</h2>
-			<form method="post" action="">
+			<form method="post" action="home.html" id="login-form">
 				<fieldset>
 					
 					<div class="container">
 						<label><b>Username</b></label>
-						<input type="text" name="username" placeholder="Enter Username"/>
+						<input type="text" name="username" placeholder="Enter Username" id="username" class="required" />
 
 						<label><b>Password</b></label>
-						<input type="password" name="password" placeholder="Enter Password" />
+						<input type="password" name="password" placeholder="Enter Password" id="password" class="required" />
 
-						<button type="submit">Login</button>
+						<button type="submit" form="login-form" value="Submit">Login</button>
 					</div>
 					<div class="container">
 						<button type="button" class="cancel-btn">Cancel</button>
