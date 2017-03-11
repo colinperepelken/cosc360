@@ -9,6 +9,8 @@
    		<link rel="stylesheet" href="style/simpleform.css" />
    		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
+   		<script type="text/javascript" src="js/makepost.js"></script>
+
    		<!-- https://www.tinymce.com/download/ -->
 		<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
  		<script>
@@ -50,22 +52,22 @@
 			<article id="center">
 				<div class="container">
 					<h2>Posting in Engines/M20</h2>
-					<form method="post" action="" id="post-form">
+					<form method="post" action="home.html" id="post-form">
 						<fieldset>
 							<label><b>Title</b></label>
-							<input type="text" name="title"/>
+							<input type="text" name="title" id="title" class="required"/>
 
 							<label><b>Content</b></label>
-							<textarea id="mytextarea" form="post-form"></textarea>
+							<textarea id="mytextarea" form="post-form" id="body" class="required"></textarea>
 
-							<button type="Submit">Submit</button>
+							<button type="Submit" form="post-form" value="Submit">Submit</button>
 						</fieldset>
 					</form>
 				</div>
 			</article>
 		</div>
 		<footer>
-			<p>Colin Bernard 2017</p>
+			<p>© Colin Bernard 2017</p>
 		</footer>
 	</body>
 </html>

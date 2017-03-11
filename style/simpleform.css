@@ -9,9 +9,13 @@
  	width: 40%;
  }
 
+ fieldset {
+ 	background-color: #30415d;
+ }
+
 .missing {
 	border: 1px solid #ff0000 !important;
-	background-color: #ff7575 !important;
+	background-color: #ffa3a3 !important;
 }
 
 input[type=text], input[type=password] {
@@ -23,8 +27,12 @@ input[type=text], input[type=password] {
 	box-sizing: border-box;
 }
 
+span a {
+	color: #8eaebd;
+}
+
 button {
-	background-color: #4286f4;
+	background-color: #cf6766;
 	color: white;
 	padding: 14px 20px;
 	margin: 8px 0;
@@ -45,6 +53,10 @@ button:hover {
 
 .container {
 	padding: 16px;
+}
+
+h2 {
+	color: white;
 }
 
 span {

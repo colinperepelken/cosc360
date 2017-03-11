@@ -25,6 +25,10 @@
  	margin-bottom: 10px;
  }
 
+ h3 {
+ 	color: white;
+ }
+
  #center button {
  	padding: 7px 10px;
  	width: 160px;
