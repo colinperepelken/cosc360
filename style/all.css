@@ -27,7 +27,7 @@ header {
  	border: 1px solid #cacaca;
 }
 
-header h1 {
+header #logo {
 	display: block;
 	margin: 0.3em 0.5em 0.5em 0.5em;
 }
@@ -44,6 +44,7 @@ header ul {
 header ul li {
 	display: inline;
 	padding: 5px; /* space login/register links */
+	font-size: 1.2em;
 }
 
  /************* RIGHT SIDEBAR *************/
