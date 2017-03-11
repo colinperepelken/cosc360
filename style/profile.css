@@ -1,0 +1,42 @@
+/*
+ * Style for the user profile page
+ */
+
+ #profile-left {
+ 	width: 450px;
+ 	float: left;
+ }
+
+ #profile-statistics {
+ 	width: 250px;
+ 	display: inline-block;
+ 	margin-left: 2em;
+ }
+
+ #profile-friends {
+ 	width: 250px;
+ 	max-height: 500px;
+
+ 	display: inline-block;
+ 	margin-left: 2em;
+ }
+
+ #center h2 {
+ 	margin-bottom: 10px;
+ }
+
+ #center button {
+ 	padding: 7px 10px;
+ 	width: 160px;
+ }
+
+ ul {
+ 	list-style-type: none;
+ 	float: left;
+ 	padding: 0;
+ }
+
+ li {
+ 	text-align: left;
+ 	padding-bottom: 5px;
+ }

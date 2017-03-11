@@ -2,10 +2,16 @@
  * Main site CSS file
  */
 
+
+
 h1, h2, h3, p, body, div {
     font-family: 'Lato', Tahoma, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
+}
+
+a {
+	text-decoration: none;
 }
 
 /*************** HEADER ***********************/
@@ -40,7 +46,6 @@ header ul li {
 	padding: 5px; /* space login/register links */
 }
 
-
  /************* RIGHT SIDEBAR *************/
 
 article#right-sidebar {
@@ -49,7 +54,7 @@ article#right-sidebar {
  	margin: 0em 4em 2em 0em;
  	height: 500px;
  	text-align: center;
- 	border: 1px solid black;
+
 }
 
 article#right-sidebar p {
@@ -61,7 +66,7 @@ article#right-sidebar button {
 	background-color: #4286f4;
 	color: white;
 	padding: 9px 15px;
-	margin: 8px 0;
+	margin: 0;
 	border: none;
 	cursor: pointer;
 	display: block;
@@ -80,6 +85,10 @@ article#right-sidebar #forum-info {
 	margin-top: 2em;
 }
 
+article#right-sidebar a {
+	text-decoration: none;
+}
+
 /************** CENTER CONTENT ********************/
 
 article#center {
@@ -87,13 +96,12 @@ article#center {
 	overflow: hidden;
 	margin: 2em 4em 2em 4em;
 	min-height: 500px;
-	border: 1px solid black;
 }
 
 .post {
 	overflow: auto;
 	padding: 2px 2px 2px 2px;
-	margin: 0.5em 0.2em 0.5em 0.2em;
+	margin: 0.5em 1em 0.5em 0.2em;
 	border-bottom: 1px solid black;
 }
 
