@@ -13,11 +13,11 @@
  	display: table;
  	margin: 0 auto 5px auto;
  	text-align: center;
- 	color: white;
+ 	color: black;
  }
 
  .user-info li a {
- 	color: #8eaebd;
+ 	color: #286DA8;
  }
 
  .user-info ul li button {
@@ -51,7 +51,7 @@
 
  .reply-content p {
  	margin: 1em 1em 0em 210px;
- 	color: white;
+ 	color: black;
  }
 
  .reply-content p:last-of-type {
@@ -71,11 +71,11 @@
 	margin-left: 250px;
 	margin-top: 1em;
 	margin-bottom: 1em;
-	color: white;
+	color: black;
 }
 
 .comment p a {
-	color: #8eaebd;
+	color: #286DA8;
 }
 
 #toggle-comments {
@@ -84,5 +84,5 @@
 	bottom: 0;
 	margin-left: 210px;
 	margin-bottom: 1em;
-	color: #8eaebd;
+	color: #286DA8;
 }

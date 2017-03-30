@@ -11,7 +11,7 @@ h1, h2, h3, p, body, div {
 }
 
 body {
-	background-color: black;
+	background-color: white;
 }
 
 a {
@@ -22,13 +22,13 @@ a {
 
 header {
  	border-radius: 10px;
- 	background: #031424;
+ 	background: #286DA8;
  	margin: 2em 4em 2em 4em;
  	height: 80px;
  	padding-left: 1em;
  	overflow: hidden;
  	white-space: nowrap;
- 	border: 1px solid #cacaca;
+ 	border: 1px solid black;
 }
 
 header #logo {
@@ -60,17 +60,18 @@ header ul li a {
 article#right-sidebar {
 	float: right;
 	width: 250px;
- 	margin: 0em 4em 2em 0em;
+ 	margin: 0em 4em 2em 2em;
+ 	padding: 10px;
  	height: 500px;
  	text-align: center;
- 	background-color: #30415d;
+ 	background-color: #eaeff7;
 }
 
 article#right-sidebar p {
 	display: inline-block;
 	padding: 0 5px 0 5px;
-	background-color: #30415d;
-	color: white;
+	background-color: #eaeff7;
+	color: black;
 }
 
 article#right-sidebar button {
@@ -90,18 +91,18 @@ article#right-sidebar button:hover {
 
 article#right-sidebar #sidebar-search {
 	margin-bottom: 2em;
-	background-color: #30415d;
+	background-color: #eaeff7;
 	color: white;
 }
 
 article#right-sidebar #forum-info {
 	margin-top: 2em;
-	background-color: #30415d;
+	background-color: #eaeff7;
 }
 
 article#right-sidebar a {
 	text-decoration: none;
-	color: #8eaebd;
+	color: #286DA8;
 }
 
 /************** CENTER CONTENT ********************/
@@ -111,7 +112,7 @@ article#center {
 	overflow: hidden;
 	margin: 2em 4em 2em 4em;
 	min-height: 500px;
-	background-color: #30415d;
+	background-color: #eaeff7;
 }
 
 .post {
@@ -119,27 +120,27 @@ article#center {
 	padding: 2px 2px 2px 2px;
 	margin: 0.5em 1em 0.5em 0.2em;
 	border-bottom: 1px solid black;
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post .title {
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post .title a {
-	color: white;
+	color: #286DA8;
 }
 
 .post .post-info {
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post .post-info a {
-	color: white;
+	color: #438496;
 }
 
 .post .post-stats {
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post-score {
@@ -148,12 +149,12 @@ article#center {
 	height: 4.5em;
 	width: 30px;
 	align-items: stretch;
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post-score p {
 	text-align: center;
-	background-color: #8eaebd;
+	background-color: white;
 }
 
 .post-score img {
@@ -171,13 +172,13 @@ footer {
     margin: 0 4em 0 4em;
     color: black;
     border-radius: 10px;
-    background-color: #30415d;
+    background-color: #eaeff7;
 }
 
 footer p {
 	text-align: center;
 	font-size: 12px;
-	background-color: #30415d;
-	color: white;
+	background-color: #eaeff7;
+	color: black;
 }
 
