@@ -14,16 +14,17 @@
 	$threads = [];
 
 	// fetch all posts
-	if ($stmt = $mysqli->prepare("SELECT poster_id, title, content FROM threads")) {
+	if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content FROM threads")) {
 		
 		$stmt->execute();
 
-		$stmt->bind_result($poster_id, $title, $content);
+		$stmt->bind_result($thread_id, $poster_id, $title, $content);
 
 
 		// fetch all posts and store in an array $threads
 		while ($stmt->fetch()) {
 			array_push($threads, [
+				'thread_id' => $thread_id,
 				'poster_id' => $poster_id,
 				'title' => $title,
 				'content' => $content
@@ -83,7 +84,7 @@
 							<p>2</p>
 							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
-						<p class="title"><a href="viewpost.html"><?=$thread['title']?></a></p>
+						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
 						<p class="post-info">submitted 3 hours ago by <a href="profile.html">Colin</a> in <a href="">Members' Cars</a></h2>
 						<p class="post-stats">40 replies, 1543 views</p>
 					</div>

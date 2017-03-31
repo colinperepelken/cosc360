@@ -57,7 +57,16 @@
 		    		$stmt->execute();
 		    		$stmt->close();
 
-		    		header('Location: viewpost.html'); // re direct to the post that was just made
+
+		    		// get the id of the thread that was just created so can re direct to it
+		    		if ($stmt = $mysqli->prepare("SELECT thread_id FROM threads WHERE poster_id=? AND title=? AND content=?;")) {
+		    			
+		    			$stmt->bind_param("iss", $poster_id, $title, $content);
+		    			$stmt->execute();
+		    			$stmt->bind_result($thread_id);
+		    			$stmt->fetch();
+		    			header("Location: viewpost.php?id=$thread_id"); // re direct to the post that was just made
+		    		}
 		    	}
 
 		    }
