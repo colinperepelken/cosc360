@@ -65,6 +65,7 @@
   				image_caption: true
  			});
   		</script>
+  		<script src="js/togglecomments.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<header>
@@ -98,7 +99,9 @@
 				</div>
 			</article>
 			<article id="center">
+				<!-- the original thread post/entry -->
 				<div class="reply-entry">
+					<!-- profile/poster information -->
 					<div class="user-info">
 						<ul>
 							<li><a href="profile.html"><b>Brad</b></a></li>
@@ -108,13 +111,15 @@
 							<li><button type="button">Message</button></li>
 						</ul>
 					</div>
+					<!-- the reply content -->
 					<div class="reply-content">
 						<h3><?=$thread['title']?></h3>
 						<p class="reply-date"><i>2017-02-17 3:20PM</i></p>
 						<p><?=$thread['content']?></p>
 						<button type="button" class="reply-button">Add a Comment</button>
-						<a href="" id="toggle-comments">Hide Comments V</a>
+						<a href="javascript:toggleComments()" id="toggle-comments">Hide Comments &uarr;</a>
 					</div>
+					<!-- comments on the original thread post/entry -->
 					<div class="comment">
 						<p class="comment-info"><a href=""><b>Anastasia</b></a> <i>(2017-02-17 3:25PM)</i></p>
 						<p class="comment-content">Hey have you fermentum id lacus interdum pellentesque. Donec at diam nec lectus efficitur sodales. Pellentesque eget orci dignissim, eleifend tortor aliquet, euismod risus.</p>
@@ -124,6 +129,7 @@
 						<p class="comment-content">This is such a sick comment right here!!!!</p>
 					</div>
 				</div>
+				<!-- more thread replies that aren't the original thread post -->
 				<div class="reply-entry">
 					<div class="user-info">
 						<ul>
