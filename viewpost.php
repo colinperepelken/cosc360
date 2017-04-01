@@ -117,68 +117,24 @@
 						<h3><?=$thread['title']?></h3>
 						<p class="reply-date"><i>2017-02-17 3:20PM</i></p>
 						<p><?=$thread['content']?></p>
-						<a href="javascript:toggleComments()" id="toggle-comments">Hide Comments &uarr;</a>
 					</div>
-					<!-- comments on the original thread post/entry -->
-					<?php
-
-						// get all comments on original thread
-						$comments = [];
-						if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_comments, users WHERE poster_id=user_id AND parent_id=? AND is_main=1;")) { // TODO: add posted_time
-							$stmt->bind_param("i", $thread_id);
-							$stmt->execute();
-
-							$stmt->bind_result($username, $poster_id, $content);
-
-							while ($stmt->fetch()) {
-								array_push($comments, [
-									'username' => $username,
-									'poster_id' => $poster_id,
-									'content' => $content
-								]);
-							}
-						}
-
-
-					?>
-					<?php foreach ($comments as $comment): ?><!-- print out each of the comments -->
-						<div class="comment">
-							<p class="comment-info"><a href=""><b><?=$comment['username']?></b></a> <i>(2017-02-17 3:25PM)</i></p>
-							<p class="comment-content"><?=$comment['content']?></p>
-						</div>
-					<?php endforeach ?>
-					<?php if ($loggedIn): ?><!-- add a comment -->
-						<div class="comment">
-							<form action="processcomment.php" method="post" class="add-comment-form">
-								<input type="hidden" name="parent-id" value="<?=$thread_id?>"/>
-								<input type="hidden" name="thread-id" value="<?=$thread_id?>"/>
-								<input type="hidden" name="is_main" value="true"/>
-								<input type="text" name="comment-content" class="comment-input" placeholder="Add a comment..."/>
-								<input type="submit" class="comment-submit" name="Submit" value="Add Comment"/>
-							</form>
-						</div>
-					<?php else: ?>
-						<div class="comment">
-							<p>Login to add a comment...</p>
-						</div>
-					<?php endif ?>
 				</div>
 
 				<?php
 					// fetch all thread replies from DB
 					$replies = [];
-					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, reply_id FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
-						$stmt->bind_param("i", $thread_id);
+					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
+						$stmt->bind_param("s", $thread_id);
 						$stmt->execute();
 
 						$stmt->bind_result($username, $poster_id, $content);
 
 						while ($stmt->fetch()) {
+							echo $content2;
 							array_push($replies, [
 								'username' => $username,
 								'poster_id' => $poster_id,
-								'content' => $content,
-								'reply_id' => $reply_id
+								'content' => $content
 							]);
 						}
 					}
@@ -202,51 +158,7 @@
 							<p class="reply-date"><i>2017-02-17 5:43PM</i></p>
 							<p><?=$reply['content']?></p>
 						</div>
-					
-					<?php
-
-						// get all comments on reply
-						$comments = [];
-						if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_comments, users WHERE poster_id=user_id AND parent_id=? AND is_main=0 AND thread_id=?;")) { // TODO: add posted_time
-							$stmt->bind_param("ii", $reply_id, $thread_id); // TODO: change first one to reply_id
-							$stmt->execute();
-
-							$stmt->bind_result($username, $poster_id, $content);
-
-							while ($stmt->fetch()) {
-								array_push($comments, [
-									'username' => $username,
-									'poster_id' => $poster_id,
-									'content' => $content
-								]);
-							}
-						}
-
-
-					?>
-					<?php foreach ($comments as $comment): ?><!-- print out each of the comments -->
-						<div class="comment">
-						<p class="comment-info"><a href=""><b><?=$comment['username']?></b></a> <i>(2017-02-17 3:25PM)</i></p>
-						<p class="comment-content"><?=$comment['content']?></p>
 					</div>
-					</div>
-					<?php endforeach ?>
-					<?php if ($loggedIn): ?><!-- add a comment -->
-						<div class="comment">
-							<form action="processcomment.php" method="post" class="add-comment-form">
-								<input type="hidden" name="parent-id" value="<?=$thread_id?>"/><!-- TODO: change to reply_id -->
-								<input type="hidden" name="thread-id" value="<?=$thread_id?>"/>
-								<input type="hidden" name="is_main" value="false"/>
-								<input type="text" name="comment-content" class="comment-input" placeholder="Add a comment..."/>
-								<input type="submit" class="comment-submit" name="Submit" value="Add Comment"/>
-							</form>
-						</div>
-					<?php else: ?>
-						<div class="comment">
-							<p>Login to add a comment...</p>
-						</div>
-					<?php endif ?>
-				</div>
 				<?php endforeach ?>
 				<?php if ($loggedIn): ?>
 					<div class="reply-entry">
