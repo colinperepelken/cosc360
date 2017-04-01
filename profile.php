@@ -1,3 +1,60 @@
+<?php 
+	require 'config.php';
+	session_start();
+
+	$loggedIn = false;
+
+	// check if logged in
+	if (isset($_SESSION['username'])) {
+		$username = $_SESSION['username'];
+		$loggedIn = true;
+
+		// get current logged in user id
+	    if ($stmt = $mysqli->prepare("SELECT user_id FROM users WHERE username=?")) {
+
+	    	// bind parameters
+	    	$stmt->bind_param("s", $username);
+	    	$stmt->execute();
+	    	$stmt->bind_result($user_id);
+	    	$stmt->fetch();
+	    	$logged_in_user_id = $user_id;
+		    $stmt->close(); // close the statement
+	    } 
+	}
+
+	if (isset($_GET['id'])) {
+		$user_id = $_GET['id'];
+
+		// fetch user from DB with this id
+	    if ($stmt = $mysqli->prepare("SELECT username, email, profile_image_path FROM users WHERE user_id=?")) {
+
+	    	// bind parameters
+	    	$stmt->bind_param("i", $user_id);
+	    	$stmt->execute();
+	    	$stmt->bind_result($username, $email, $profile_image_path);
+
+
+		    while ($stmt->fetch()) {
+		    	$userExists = true;
+		    	break; // only want one user
+		    }
+
+		    $stmt->close(); // close the statement
+	    } 
+
+	    if (!$userExists) {
+	    	header('Location: home.php'); // if no user exists with that ID
+	    }
+
+	} else {
+		header('Location: home.php'); // if no ID is set then re direct to home page
+	}
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 	<head lang="en">
@@ -21,7 +78,7 @@
 		<div id="main">
 			<article id="right-sidebar">
 				<div id="sidebar-search">
-					<form action="home.php" method="get">
+					<form action="home.php" method="get" enctype="multipart/form-data">
 						<input type="text" placeholder="Enter a search term">
 						<button type="submit">Search</button>
 					</form>
@@ -37,11 +94,18 @@
 				</div>
 			</article>
 			<article id="center">
-			<h2>Colin's Profile</h2>
+			<h2><?=$username?>'s Profile</h2>
 				<div id="profile-left">
-					<img src="images/e30.jpg" alt="Profile image" width="450" height="320">
+					<img src="<?=$profile_image_path?>" alt="Profile image" width="450" height="320">
+					<?php if ($logged_in_user_id == $user_id): ?> <!-- if user is vewing their own profile -->
+						<form action="processimage.php" method="post" enctype="multipart/form-data">
+						    <input type="file" name="fileToUpload" id="fileToUpload">
+						    <input type="submit" value="Upload Image" name="submit">
+						</form>
+					<? endif ?>
 					<ul>
 						<li>Location: Kelowna, BC</li>
+						<li>Email: <?=$email?></li>
 						<li>Car(s): 1989 325i Convertible</li>
 						<li>colinbernard.ca</li>
 						<li><button type="button">Message</button></li>
@@ -54,7 +118,7 @@
 						<li>Posts Per Day: 0.01</li>
 						<li>Account created: 2015-02-23</li>
 						<li>Last activity: 2017-03-01</li>
-						<li><button type="button">View Posts by Colin</button></li>
+						<li><button type="button">View Posts by <?=$username?></button></li>
 					</ul> 
 				</div>
 				<div id="profile-friends">
