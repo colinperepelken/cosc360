@@ -14,11 +14,11 @@
 	$threads = [];
 
 	// fetch all posts
-	if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content FROM threads")) {
+	if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
 		
 		$stmt->execute();
 
-		$stmt->bind_result($thread_id, $poster_id, $title, $content);
+		$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
 
 
 		// fetch all posts and store in an array $threads
@@ -27,7 +27,8 @@
 				'thread_id' => $thread_id,
 				'poster_id' => $poster_id,
 				'title' => $title,
-				'content' => $content
+				'content' => $content,
+				'username' => $username
 			]);
 		}
 	}
@@ -66,11 +67,15 @@
 					</form>
 					<p><a href="">Advanced Search</a></p>
 				</div>
-				<a href="makepost.php"><button type="button">Submit a Post</button></a>
+				<?php if ($loggedIn): ?>
+					<a href="makepost.php"><button type="button">Submit a Post</button></a>
+				<?php endif ?>
 				<br>
 				<p><a href="">Browse Forums</a></p>
 				<br>
-				<p><a href="">My Subscribed</a></p>
+				<?php if ($loggedIn): ?>
+					<p><a href="">My Subscribed</a></p>
+				<?php endif ?>
 				<div id="forum-info">
 					<p>Welcome to R3DLINE, your ultimate source for BMW E30s. Please read our rules and guidelines blah blah blah more forum information stuff</p>
 				</div>
@@ -85,7 +90,7 @@
 							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
 						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
-						<p class="post-info">submitted 3 hours ago by <a href="profile.html">Colin</a> in <a href="">Members' Cars</a></h2>
+						<p class="post-info">submitted 3 hours ago by <a href="profile.html"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
 						<p class="post-stats">40 replies, 1543 views</p>
 					</div>
 

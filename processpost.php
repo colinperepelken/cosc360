@@ -42,7 +42,7 @@
 			    $stmt->close(); // close the statement
 		    } 
 
-		    // insert the user
+		    
 		    if ($userExists) {
 		    	echo $poster_id;
 		    	echo $title;
@@ -56,8 +56,6 @@
 		    		// execute insert
 		    		$stmt->execute();
 		    		$stmt->close();
-
-		    		if ($stmt = $mysqli->prepare("SELECT reply_"))
 
 
 		    		// get the id of the thread that was just created so can re direct to it
