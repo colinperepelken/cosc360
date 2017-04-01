@@ -32,6 +32,7 @@
 				$thread['content'] = $content;
 				break; // should only return one thread... but just in case
 			}
+			$stmt->close();
 		}
 	} else {
 		header('Location: home.php');
@@ -116,46 +117,151 @@
 						<h3><?=$thread['title']?></h3>
 						<p class="reply-date"><i>2017-02-17 3:20PM</i></p>
 						<p><?=$thread['content']?></p>
-						<button type="button" class="reply-button">Add a Comment</button>
 						<a href="javascript:toggleComments()" id="toggle-comments">Hide Comments &uarr;</a>
 					</div>
 					<!-- comments on the original thread post/entry -->
-					<div class="comment">
-						<p class="comment-info"><a href=""><b>Anastasia</b></a> <i>(2017-02-17 3:25PM)</i></p>
-						<p class="comment-content">Hey have you fermentum id lacus interdum pellentesque. Donec at diam nec lectus efficitur sodales. Pellentesque eget orci dignissim, eleifend tortor aliquet, euismod risus.</p>
-					</div>
-					<div class="comment">
-						<p class="comment-info"><a href=""><b>James Yu</b></a> <i>(2017-02-17 4:58PM)</i></p>
-						<p class="comment-content">This is such a sick comment right here!!!!</p>
-					</div>
-				</div>
-				<!-- more thread replies that aren't the original thread post -->
-				<div class="reply-entry">
-					<div class="user-info">
-						<ul>
-							<li><a href=""><b>Cassandra</b></a></li>
-							<li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg/250px-2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg" width="80px" height="80px" class="post-profile-picture"/></li>
-							<li>Losertown, BC</li>
-							<li>2008 Toyota Yaris Custom</li>
-							<li><button type="button">Message</button></li>
-						</ul>
-					</div>
-					<div class="reply-content">
-						<p class="reply-date"><i>2017-02-17 5:43PM</i></p>
-						<p>Did you torque the tensioner bolts to spec? I had the same issue with my implementation of Ask() Inference engine using inference rules to show KB != beta.
-						</p>
-						<p>
+					<?php
 
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eu mi venenatis, ultricies lacus sed, malesuada dui. Fusce consectetur turpis ac enim iaculis laoreet. Aliquam iaculis, lectus viverra vestibulum imperdiet, sem tellus tincidunt urna, quis congue enim sapien sit amet neque. Donec id quam viverra, porta velit quis, fringilla tellus. Nulla sit amet nulla consequat tellus mollis mollis in et mi. Donec nec erat eget sapien ullamcorper eleifend in eget nisl. Praesent hendrerit velit risus, at interdum purus blandit vel. Aliquam feugiat dolor ex.
-						</p>
-						<p>
-						Vivamus tincidunt erat vel efficitur consequat. Integer semper varius sollicitudin. Sed fermentum id lacus interdum pellentesque. Donec at diam nec lectus efficitur sodales. Pellentesque eget orci dignissim, eleifend tortor aliquet, euismod risus. Donec a efficitur ante. Donec ultrices, libero id tincidunt tincidunt, ex diam dapibus urna, sit amet volutpat lectus nunc in dui. Praesent eleifend vulputate turpis ut commodo. In lobortis viverra pretium. Vestibulum tempus tempus varius.
-						</p>
-						<p>
-						Sed eget maximus erat, nec ullamcorper sapien. Pellentesque tempus ornare justo vitae sodales. Phasellus et ultrices metus. Suspendisse potenti. Vestibulum egestas condimentum sagittis. Fusce non finibus ipsum, vel euismod lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur pulvinar ut ex sit amet posuere. Ut gravida, nunc quis imperdiet blandit, libero sem congue ante, ut elementum dolor massa pharetra enim. Pellentesque arcu diam, sodales non dignissim id, sollicitudin id ante. Pellentesque molestie est quis nunc semper, ac ultrices dui eleifend. Curabitur metus felis, porttitor sed gravida venenatis, vehicula ac ligula. Nullam ut ultricies quam. Curabitur sit amet convallis metus, ac venenatis ex. </p>
-						<button type="button" class="reply-button">Add a Comment</button>
-					</div>
+						// get all comments on original thread
+						$comments = [];
+						if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_comments, users WHERE poster_id=user_id AND parent_id=? AND is_main=1;")) { // TODO: add posted_time
+							$stmt->bind_param("i", $thread_id);
+							$stmt->execute();
+
+							$stmt->bind_result($username, $poster_id, $content);
+
+							while ($stmt->fetch()) {
+								array_push($comments, [
+									'username' => $username,
+									'poster_id' => $poster_id,
+									'content' => $content
+								]);
+							}
+						}
+
+
+					?>
+					<?php foreach ($comments as $comment): ?><!-- print out each of the comments -->
+						<div class="comment">
+							<p class="comment-info"><a href=""><b><?=$comment['username']?></b></a> <i>(2017-02-17 3:25PM)</i></p>
+							<p class="comment-content"><?=$comment['content']?></p>
+						</div>
+					<?php endforeach ?>
+					<?php if ($loggedIn): ?><!-- add a comment -->
+						<div class="comment">
+							<form action="processcomment.php" method="post" class="add-comment-form">
+								<input type="hidden" name="parent-id" value="<?=$thread_id?>"/>
+								<input type="hidden" name="thread-id" value="<?=$thread_id?>"/>
+								<input type="hidden" name="is_main" value="true"/>
+								<input type="text" name="comment-content" class="comment-input" placeholder="Add a comment..."/>
+								<input type="submit" class="comment-submit" name="Submit" value="Add Comment"/>
+							</form>
+						</div>
+					<?php else: ?>
+						<div class="comment">
+							<p>Login to add a comment...</p>
+						</div>
+					<?php endif ?>
 				</div>
+
+				<?php
+					// fetch all thread replies from DB
+					$replies = [];
+					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, reply_id FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
+						$stmt->bind_param("i", $thread_id);
+						$stmt->execute();
+
+						$stmt->bind_result($username, $poster_id, $content);
+
+						while ($stmt->fetch()) {
+							array_push($replies, [
+								'username' => $username,
+								'poster_id' => $poster_id,
+								'content' => $content,
+								'reply_id' => $reply_id
+							]);
+						}
+					}
+
+
+
+				?>
+				<!-- more thread replies that aren't the original thread post -->
+				<?php foreach ($replies as $reply): ?>
+					<div class="reply-entry">
+						<div class="user-info">
+							<ul>
+								<li><a href=""><b><?=$reply['username']?></b></a></li>
+								<li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg/250px-2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg" width="80px" height="80px" class="post-profile-picture"/></li>
+								<li>Losertown, BC</li>
+								<li>2008 Toyota Yaris Custom</li>
+								<li><button type="button">Message</button></li>
+							</ul>
+						</div>
+						<div class="reply-content">
+							<p class="reply-date"><i>2017-02-17 5:43PM</i></p>
+							<p><?=$reply['content']?></p>
+						</div>
+					
+					<?php
+
+						// get all comments on reply
+						$comments = [];
+						if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_comments, users WHERE poster_id=user_id AND parent_id=? AND is_main=0 AND thread_id=?;")) { // TODO: add posted_time
+							$stmt->bind_param("ii", $reply_id, $thread_id); // TODO: change first one to reply_id
+							$stmt->execute();
+
+							$stmt->bind_result($username, $poster_id, $content);
+
+							while ($stmt->fetch()) {
+								array_push($comments, [
+									'username' => $username,
+									'poster_id' => $poster_id,
+									'content' => $content
+								]);
+							}
+						}
+
+
+					?>
+					<?php foreach ($comments as $comment): ?><!-- print out each of the comments -->
+						<div class="comment">
+						<p class="comment-info"><a href=""><b><?=$comment['username']?></b></a> <i>(2017-02-17 3:25PM)</i></p>
+						<p class="comment-content"><?=$comment['content']?></p>
+					</div>
+					</div>
+					<?php endforeach ?>
+					<?php if ($loggedIn): ?><!-- add a comment -->
+						<div class="comment">
+							<form action="processcomment.php" method="post" class="add-comment-form">
+								<input type="hidden" name="parent-id" value="<?=$thread_id?>"/><!-- TODO: change to reply_id -->
+								<input type="hidden" name="thread-id" value="<?=$thread_id?>"/>
+								<input type="hidden" name="is_main" value="false"/>
+								<input type="text" name="comment-content" class="comment-input" placeholder="Add a comment..."/>
+								<input type="submit" class="comment-submit" name="Submit" value="Add Comment"/>
+							</form>
+						</div>
+					<?php else: ?>
+						<div class="comment">
+							<p>Login to add a comment...</p>
+						</div>
+					<?php endif ?>
+				</div>
+				<?php endforeach ?>
+				<?php if ($loggedIn): ?>
+					<div class="reply-entry">
+						<form id="post-form" method="post" action="processreply.php">
+							<textarea id="mytextarea" form="post-form" name="content" class="required"></textarea>
+							<input type="hidden" name="parent-id" value="<?=$thread_id?>" />
+							<button type="Submit" form="post-form" value="Submit">Add a Reply</button>
+						</form>
+					</div>
+
+				<?php else: ?>
+					<div class="reply-entry">
+						<p>Login to add a reply...</p>
+					</div>
+				<?php endif ?>
 			</article>
 		</div>
 		<footer>

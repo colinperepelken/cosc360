@@ -85,3 +85,11 @@
 	margin-bottom: 1em;
 	color: #286DA8;
 }
+
+.comment-input {
+	width: 60% !important; /* lol I shouldn't use this. oops */
+}
+
+.comment-submit {
+	width: 150px !important; /* lol */ 
+}

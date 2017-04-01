@@ -57,6 +57,8 @@
 		    		$stmt->execute();
 		    		$stmt->close();
 
+		    		if ($stmt = $mysqli->prepare("SELECT reply_"))
+
 
 		    		// get the id of the thread that was just created so can re direct to it
 		    		if ($stmt = $mysqli->prepare("SELECT thread_id FROM threads WHERE poster_id=? AND title=? AND content=?;")) {
@@ -68,7 +70,6 @@
 		    			header("Location: viewpost.php?id=$thread_id"); // re direct to the post that was just made
 		    		}
 		    	}
-
 		    }
 
 		    $mysqli->close(); // close the connection

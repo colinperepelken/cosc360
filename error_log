@@ -1,1 +1,13 @@
-[31-Mar-2017 04:21:47 UTC] PHP Fatal error:  Call to undefined function push() in /home/suhff/public_html/cosc360/home.php on line 26
+[31-Mar-2017 23:19:13 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 52
+[31-Mar-2017 23:23:05 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 52
+[31-Mar-2017 23:31:49 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 53
+[31-Mar-2017 23:32:16 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 53
+[31-Mar-2017 23:33:43 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 60
+[31-Mar-2017 23:34:27 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of elements in type definition string doesn't match number of bind variables in /home/suhff/public_html/cosc360/processcomment.php on line 60
+[01-Apr-2017 00:12:18 UTC] PHP Warning:  mysqli_stmt::bind_result(): Number of bind variables doesn't match number of fields in prepared statement in /home/suhff/public_html/cosc360/viewpost.php on line 131
+[01-Apr-2017 00:13:25 UTC] PHP Warning:  mysqli_stmt::bind_result(): Number of bind variables doesn't match number of fields in prepared statement in /home/suhff/public_html/cosc360/viewpost.php on line 131
+[01-Apr-2017 00:15:18 UTC] PHP Warning:  mysqli_stmt::bind_result(): Number of bind variables doesn't match number of fields in prepared statement in /home/suhff/public_html/cosc360/viewpost.php on line 131
+[01-Apr-2017 00:41:51 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of variables doesn't match number of parameters in prepared statement in /home/suhff/public_html/cosc360/processreply.php on line 48
+[01-Apr-2017 00:51:37 UTC] PHP Parse error:  syntax error, unexpected ':', expecting '(' in /home/suhff/public_html/cosc360/viewpost.php on line 214
+[01-Apr-2017 00:51:40 UTC] PHP Parse error:  syntax error, unexpected ':', expecting '(' in /home/suhff/public_html/cosc360/viewpost.php on line 214
+[01-Apr-2017 01:39:23 UTC] PHP Notice:  Undefined index: thread_id in /home/suhff/public_html/cosc360/processcomment.php on line 19
