@@ -9,15 +9,14 @@
 		$username = $_SESSION['username'];
 		$loggedIn = true;
 
-		// get current logged in user id
-	    if ($stmt = $mysqli->prepare("SELECT user_id FROM users WHERE username=?")) {
+		// get the id of the logged in user and check if they are admin
+	    if ($stmt = $mysqli->prepare("SELECT user_id, is_admin FROM users WHERE username=?")) {
 
 	    	// bind parameters
 	    	$stmt->bind_param("s", $username);
 	    	$stmt->execute();
-	    	$stmt->bind_result($user_id);
+	    	$stmt->bind_result($user_id, $is_admin);
 	    	$stmt->fetch();
-	    	$logged_in_user_id = $user_id;
 		    $stmt->close(); // close the statement
 	    } 
 	}
@@ -72,7 +71,10 @@
 			<a href="home.php" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
 			<ul>
 				<?php if ($loggedIn): ?>
-					<li><a href="profile.php?id=<?=$user_id?>"><?=$username?></a></li>
+					<?php if ($is_admin == 1): ?>
+						<li><a href="admin.php">Admin Controls</a></li>
+					<?php endif ?>
+					<li><a href="profile.php?id=<?=$user_id?>"><?=$_SESSION['username']?></a></li>
 					<li><a href="logout.php">Logout</a></li>
 				<?php else: ?>
 					<li><a href="login.html">Login</a></li>

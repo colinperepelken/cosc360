@@ -18,7 +18,7 @@
 				$userExists = false;
 
 			    // prepare the statement
-			    if ($stmt = $mysqli->prepare("SELECT * FROM users WHERE username=? AND password=?")) {
+			    if ($stmt = $mysqli->prepare("SELECT is_banned FROM users WHERE username=? AND password=?")) {
 			    	
 			    	$password = md5($password);
 
@@ -28,23 +28,38 @@
 			    	// execute query
 			    	$stmt->execute();
 
+			    	$stmt->bind_result($is_banned);
+
 				    // checks if a user already exists
 				    while ($stmt->fetch()) {
-				    	
-				    	$_SESSION['username'] = $username; // store new session
-				    	echo "<script>alert(Login Successful!)</script>";
-				    	header('Location: home.php'); // re direct user to home page
 
-				    	$userExists = true;
+				    	if ($is_banned == 1) { // THE USER HAS BEEN BANNED HAHAHHA
+					    	header('Location: banned.html');
+					    	$redirect_to_banned = true;
+			    		} else {
+
+					    	$_SESSION['username'] = $username; // store new session
+	
+					    	header('Location: home.php'); // re direct user to home page
+
+					    	$userExists = true;
+			    		}
+
+
 				    	break; // only display the above once
 				    }
 
 				    $stmt->close(); // close the statement
 			    }
 
+
 			    if (!$userExists) {
-			    	echo "<script>alert(Invalid login!)</script>";
+
 			    	header('Location: login.html'); // if user name or password are invalid/dont exist
+			    }
+
+			    if ($redirect_to_banned) {
+			    	header('Location: banned.html');
 			    }
 
 
