@@ -1,3 +1,24 @@
+<?php 
+	require 'config.php';
+	session_start();
+	$loggedIn = false;
+
+	if (isset($_SESSION['username'])) {
+		$username = $_SESSION['username'];
+		$loggedIn = true;
+		
+		// get the id of the logged in user and check if they are admin
+	    if ($stmt = $mysqli->prepare("SELECT user_id, is_admin FROM users WHERE username=?")) {
+
+	    	// bind parameters
+	    	$stmt->bind_param("s", $username);
+	    	$stmt->execute();
+	    	$stmt->bind_result($user_id, $is_admin);
+	    	$stmt->fetch();
+		    $stmt->close(); // close the statement
+	    } 
+	}
+?>
 <!DOCTYPE html>
 <html>
 	<head lang="en">
@@ -25,16 +46,24 @@
 	</head>
 	<body>
 		<header>
-			<a href="home.html" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
+			<a href="home.php" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
 			<ul>
-				<li><a href="login.html">Login</a></li>
-				<li><a href="register.html">Register</a></li>
+				<?php if ($loggedIn): ?>
+					<?php if ($is_admin == 1): ?>
+						<li><a href="admin.php">Admin Controls</a></li>
+					<?php endif ?>
+					<li><a href="profile.php?id=<?=$user_id?>"><?=$_SESSION['username']?></a></li>
+					<li><a href="logout.php">Logout</a></li>
+				<?php else: ?>
+					<li><a href="login.html">Login</a></li>
+					<li><a href="register.html">Register</a></li>
+				<?php endif ?>
 			</ul>
 		</header>
 		<div id="main">
 			<article id="right-sidebar">
 				<div id="sidebar-search">
-					<form action="home.html" method="get">
+					<form action="home.php" method="get">
 						<input type="text" placeholder="Enter a search term">
 						<button type="submit">Search</button>
 					</form>
@@ -52,13 +81,13 @@
 			<article id="center">
 				<div class="container">
 					<h2>Posting in Engines/M20</h2>
-					<form method="post" action="home.html" id="post-form">
+					<form method="post" action="processpost.php" id="post-form">
 						<fieldset>
 							<label><b>Title</b></label>
 							<input type="text" name="title" id="title" class="required"/>
 
 							<label><b>Content</b></label>
-							<textarea id="mytextarea" form="post-form" id="body" class="required"></textarea>
+							<textarea id="mytextarea" form="post-form" name="content" class="required"></textarea>
 
 							<button type="Submit" form="post-form" value="Submit">Submit</button>
 						</fieldset>

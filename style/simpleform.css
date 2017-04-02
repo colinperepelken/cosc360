@@ -63,3 +63,11 @@ span {
 	float: right;
 	padding-top: 16px;
 }
+
+.comment-input {
+	width: 60% !important; /* lol I shouldn't use this. oops */
+}
+
+.comment-submit {
+	width: 150px !important; /* lol */ 
+}
