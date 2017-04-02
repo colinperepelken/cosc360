@@ -4,10 +4,20 @@
 	session_start();
 	$loggedIn = false;
 
-	// check if logged in
 	if (isset($_SESSION['username'])) {
-		$username = $_SESSION['username'];
-		$loggedIn = true;
+	$username = $_SESSION['username'];
+	$loggedIn = true;
+
+	// get the id of the logged in user
+    if ($stmt = $mysqli->prepare("SELECT user_id FROM users WHERE username=?")) {
+
+    	// bind parameters
+    	$stmt->bind_param("s", $username);
+    	$stmt->execute();
+    	$stmt->bind_result($user_id);
+    	$stmt->fetch();
+	    $stmt->close(); // close the statement
+    } 
 	}
 
 	// get thread info
@@ -16,13 +26,13 @@
 		$thread_id = $_GET['id'];
 
 		// query DB for thread info
-		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content FROM threads WHERE thread_id=?;")) { // TODO: add posted_time
+		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content, profile_image_path, username FROM threads, users WHERE thread_id=? AND user_id=poster_id;")) { // TODO: add posted_time
 		
 			$stmt->bind_param("i", $thread_id);
 
 			$stmt->execute();
 
-			$stmt->bind_result($poster_id, $title, $content);
+			$stmt->bind_result($poster_id, $title, $content, $profile_image_path, $username);
 
 			$thread = []; // store the information associated with this thread in obj
 
@@ -30,6 +40,8 @@
 				$thread['poster_id'] = $poster_id;
 				$thread['title'] = $title;
 				$thread['content'] = $content;
+				$thread['profile_image_path'] = $profile_image_path;
+				$thread['username'] = $username;
 				break; // should only return one thread... but just in case
 			}
 			$stmt->close();
@@ -73,7 +85,7 @@
 			<a href="home.php" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
 			<ul>
 				<?php if ($loggedIn): ?>
-					<li><a href="profile.html"><?=$username?></a></li>
+					<li><a href="profile.php?id=<?=$user_id?>"><?=$username?></a></li>
 					<li><a href="logout.php">Logout</a></li>
 				<?php else: ?>
 					<li><a href="login.html">Login</a></li>
@@ -105,8 +117,8 @@
 					<!-- profile/poster information -->
 					<div class="user-info">
 						<ul>
-							<li><a href="profile.html"><b>Brad</b></a></li>
-							<li><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSa4LNlO5Bf7frUdD0vorSMVi4fJqA-KCpiMhkpw102Ql0OfRMWPekFb7pD" width="80px" height="80px" class="post-profile-picture"/></li>
+							<li><a href="profile.php?id=<?=$thread['poster_id']?>"><b><?=$thread['username']?></b></a></li>
+							<li><img src="<?=$thread['profile_image_path']?>" width="80px" height="80px" class="post-profile-picture" alt="profile picture not set"/></li>
 							<li>Kelowna, BC</li>
 							<li>1987 325is</li>
 							<li><button type="button">Message</button></li>
@@ -123,18 +135,19 @@
 				<?php
 					// fetch all thread replies from DB
 					$replies = [];
-					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
+					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, profile_image_path FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
 						$stmt->bind_param("s", $thread_id);
 						$stmt->execute();
 
-						$stmt->bind_result($username, $poster_id, $content);
+						$stmt->bind_result($username, $poster_id, $content, $profile_image_path);
 
 						while ($stmt->fetch()) {
 							echo $content2;
 							array_push($replies, [
 								'username' => $username,
 								'poster_id' => $poster_id,
-								'content' => $content
+								'content' => $content,
+								'profile_image_path' => $profile_image_path
 							]);
 						}
 					}
@@ -148,9 +161,9 @@
 						<div class="user-info">
 							<ul>
 								<li><a href=""><b><?=$reply['username']?></b></a></li>
-								<li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg/250px-2008-2010_Toyota_Yaris_(NCP93R)_YRS_sedan_(2010-12-28).jpg" width="80px" height="80px" class="post-profile-picture"/></li>
-								<li>Losertown, BC</li>
-								<li>2008 Toyota Yaris Custom</li>
+								<li><img src="<?=$reply['profile_image_path']?>" width="80px" height="80px" class="post-profile-picture" alt="profile picture not set"/></li>
+								<li>Sometown, BC</li>
+								<li>1989 325ic</li>
 								<li><button type="button">Message</button></li>
 							</ul>
 						</div>

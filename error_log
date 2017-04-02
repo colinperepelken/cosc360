@@ -116,3 +116,115 @@
 [01-Apr-2017 22:59:20 UTC] PHP Notice:  Undefined index: fileToUpload in /home/suhff/public_html/cosc360/processimage.php on line 27
 [01-Apr-2017 22:59:20 UTC] PHP Warning:  getimagesize(): Filename cannot be empty in /home/suhff/public_html/cosc360/processimage.php on line 27
 [01-Apr-2017 22:59:20 UTC] PHP Notice:  Undefined index: fileToUpload in /home/suhff/public_html/cosc360/processimage.php on line 43
+[01-Apr-2017 23:00:57 UTC] PHP Warning:  move_uploaded_file(images/profiles/10641158.jpeg): failed to open stream: No such file or directory in /home/suhff/public_html/cosc360/processimage.php on line 58
+[01-Apr-2017 23:00:57 UTC] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpW7LuA3' to 'images/profiles/10641158.jpeg' in /home/suhff/public_html/cosc360/processimage.php on line 58
+[01-Apr-2017 23:06:23 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 133
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:49 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:51 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:53 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:55 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:56 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:57 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:58 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:12:59 UTC] PHP Notice:  Undefined index:  in /home/suhff/public_html/cosc360/home.php on line 106
+[01-Apr-2017 23:13:37 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:13:39 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:13:42 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:14:48 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[01-Apr-2017 23:14:49 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:26:26 UTC] PHP Warning:  mysqli_stmt::bind_result(): Number of bind variables doesn't match number of fields in prepared statement in /home/suhff/public_html/cosc360/home.php on line 33
+[02-Apr-2017 00:26:30 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:26:30 UTC] PHP Warning:  mysqli_stmt::bind_result(): Number of bind variables doesn't match number of fields in prepared statement in /home/suhff/public_html/cosc360/home.php on line 33
+[02-Apr-2017 00:27:42 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:44 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:46 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:47 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:47 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:47 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:47 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:48 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:48 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:49 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:49 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:49 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:49 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:27:57 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:28:10 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:28:32 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:29:12 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:29:13 UTC] PHP Notice:  Undefined variable: userExists in /home/suhff/public_html/cosc360/profile.php on line 45
+[02-Apr-2017 00:32:21 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 143
+[02-Apr-2017 00:32:28 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 143
+[02-Apr-2017 00:34:53 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 143
+[02-Apr-2017 00:35:02 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 143
+[02-Apr-2017 00:39:12 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:40:13 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:40:31 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:40:53 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:41:01 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:42:23 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:42:48 UTC] PHP Notice:  Undefined variable: logged_in_user_id in /home/suhff/public_html/cosc360/profile.php on line 105
+[02-Apr-2017 00:43:36 UTC] PHP Notice:  Undefined variable: content2 in /home/suhff/public_html/cosc360/viewpost.php on line 145
+[02-Apr-2017 00:55:17 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of variables doesn't match number of parameters in prepared statement in /home/suhff/public_html/cosc360/home.php on line 30
+[02-Apr-2017 00:55:17 UTC] PHP Notice:  Undefined variable: threads in /home/suhff/public_html/cosc360/home.php on line 125
+[02-Apr-2017 00:55:17 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/suhff/public_html/cosc360/home.php on line 125
+[02-Apr-2017 00:55:21 UTC] PHP Warning:  mysqli_stmt::bind_param(): Number of variables doesn't match number of parameters in prepared statement in /home/suhff/public_html/cosc360/home.php on line 30
+[02-Apr-2017 00:55:21 UTC] PHP Notice:  Undefined variable: threads in /home/suhff/public_html/cosc360/home.php on line 125
+[02-Apr-2017 00:55:21 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/suhff/public_html/cosc360/home.php on line 125
+[02-Apr-2017 00:57:38 UTC] PHP Warning:  array_push() expects parameter 1 to be array, null given in /home/suhff/public_html/cosc360/home.php on line 45
+[02-Apr-2017 00:57:38 UTC] PHP Warning:  array_push() expects parameter 1 to be array, null given in /home/suhff/public_html/cosc360/home.php on line 45
+[02-Apr-2017 00:57:38 UTC] PHP Warning:  Invalid argument supplied for foreach() in /home/suhff/public_html/cosc360/home.php on line 126

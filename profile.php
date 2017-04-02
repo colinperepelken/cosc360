@@ -71,8 +71,13 @@
 		<header>
 			<a href="home.php" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
 			<ul>
-				<li><a href="login.html">Login</a></li>
-				<li><a href="register.html">Register</a></li>
+				<?php if ($loggedIn): ?>
+					<li><a href="profile.php?id=<?=$user_id?>"><?=$username?></a></li>
+					<li><a href="logout.php">Logout</a></li>
+				<?php else: ?>
+					<li><a href="login.html">Login</a></li>
+					<li><a href="register.html">Register</a></li>
+				<?php endif ?>
 			</ul>
 		</header>
 		<div id="main">

@@ -21,28 +21,60 @@
 	    } 
 	}
 
+	// if user is searching for a post using a search term
+	if (isset($_GET['search'])) {
+		$search_term = $_GET['search'];
+		$threads = [];
 
-	$threads = [];
+		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id AND title LIKE ? ORDER BY thread_id DESC")) {
 
-	// fetch all posts
-	if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
-		
-		$stmt->execute();
+			$search_term = '%'.$search_term.'%';
+			$stmt->bind_param("s", $search_term);
+			$stmt->execute();
 
-		$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
 
 
-		// fetch all posts and store in an array $threads
-		while ($stmt->fetch()) {
-			array_push($threads, [
-				'thread_id' => $thread_id,
-				'poster_id' => $poster_id,
-				'title' => $title,
-				'content' => $content,
-				'username' => $username
-			]);
+			// fetch all posts and store in an array $threads
+			while ($stmt->fetch()) {
+				array_push($threads, [
+					'thread_id' => $thread_id,
+					'poster_id' => $poster_id,
+					'title' => $title,
+					'content' => $content,
+					'username' => $username
+				]);
+			}
+		}
+
+	} else {
+
+
+		$threads = [];
+
+		// fetch all posts
+		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
+			
+			$stmt->execute();
+
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
+
+
+			// fetch all posts and store in an array $threads
+			while ($stmt->fetch()) {
+				array_push($threads, [
+					'thread_id' => $thread_id,
+					'poster_id' => $poster_id,
+					'title' => $title,
+					'content' => $content,
+					'username' => $username
+				]);
+			}
 		}
 	}
+
+
+
 
 ?>
 
@@ -72,9 +104,9 @@
 		<div id="main">
 			<article id="right-sidebar">
 				<div id="sidebar-search">
-					<form action="home.php" method="get">
-						<input type="text" placeholder="Enter a search term">
-						<button type="submit">Search</button>
+					<form action="home.php" method="get" id="search-form">
+						<input type="text" placeholder="Enter a search term" name="search">
+						<button type="submit" value="Search" form="search-form">Search</button>
 					</form>
 					<p><a href="">Advanced Search</a></p>
 				</div>
@@ -101,7 +133,7 @@
 							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
 						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
-						<p class="post-info">submitted 3 hours ago by <a href="profile.html"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
+						<p class="post-info">submitted 3 hours ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
 						<p class="post-stats">40 replies, 1543 views</p>
 					</div>
 

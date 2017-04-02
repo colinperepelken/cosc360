@@ -6,6 +6,17 @@
 	if (isset($_SESSION['username'])) {
 		$username = $_SESSION['username'];
 		$loggedIn = true;
+
+		// get the id of the logged in user
+	    if ($stmt = $mysqli->prepare("SELECT user_id FROM users WHERE username=?")) {
+
+	    	// bind parameters
+	    	$stmt->bind_param("s", $username);
+	    	$stmt->execute();
+	    	$stmt->bind_result($user_id);
+	    	$stmt->fetch();
+		    $stmt->close(); // close the statement
+	    } 
 	}
 ?>
 <!DOCTYPE html>
@@ -38,7 +49,7 @@
 			<a href="home.php" id="logo"><img src="images/logo.png" width="300" height="42" /></a>
 			<ul>
 				<?php if ($loggedIn): ?>
-					<li><a href="profile.html"><?=$username?></a></li>
+					<li><a href="profile.php?id=<?=$user_id?>"><?=$username?></a></li>
 					<li><a href="logout.php">Logout</a></li>
 				<?php else: ?>
 					<li><a href="login.html">Login</a></li>
