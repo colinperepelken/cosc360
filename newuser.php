@@ -40,12 +40,15 @@
 
 
 				// INSERT NEW USER INTO DB
-		    	if ($stmt = $mysqli->prepare("INSERT INTO users(username, email, password) VALUES (?,?,?)")) {
+		    	if ($stmt = $mysqli->prepare("INSERT INTO users(username, email, password, profile_image_path, is_admin, is_banned) VALUES (?,?,?,?,?,?)")) {
 
 		    		$password = md5($password); // hash the password
 
 		    		// bind params
-		    		$stmt->bind_param("sss", $username, $email, $password);
+		    		$profile_image_path = " ";
+		    		$is_admin = 0;
+		    		$is_banned = 0;
+		    		$stmt->bind_param("ssssii", $username, $email, $password, $profile_image_path, $is_admin, $is_banned);
 
 		    		// execute insert
 		    		$stmt->execute();

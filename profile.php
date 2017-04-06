@@ -15,7 +15,7 @@
 	    	// bind parameters
 	    	$stmt->bind_param("s", $username);
 	    	$stmt->execute();
-	    	$stmt->bind_result($user_id, $is_admin);
+	    	$stmt->bind_result($logged_in_user_id, $is_admin);
 	    	$stmt->fetch();
 		    $stmt->close(); // close the statement
 	    } 
@@ -103,7 +103,7 @@
 			<article id="center">
 			<h2><?=$username?>'s Profile</h2>
 				<div id="profile-left">
-					<img src="<?=$profile_image_path?>" alt="Profile image" width="450" height="320">
+					<img src="<?=$profile_image_path?>" alt="Profile image" width="450" height="320"/>
 					<?php if ($logged_in_user_id == $user_id): ?> <!-- if user is vewing their own profile -->
 						<form action="processimage.php" method="post" enctype="multipart/form-data">
 						    <input type="file" name="fileToUpload" id="fileToUpload">
