@@ -26,13 +26,13 @@
 		$search_term = $_GET['search'];
 		$threads = [];
 
-		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id AND title LIKE ? ORDER BY thread_id DESC")) {
+		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username, posted_time FROM threads, users WHERE poster_id=user_id AND title LIKE ? ORDER BY thread_id DESC")) {
 
 			$search_term = '%'.$search_term.'%';
 			$stmt->bind_param("s", $search_term);
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time);
 
 
 			// fetch all posts and store in an array $threads
@@ -42,7 +42,8 @@
 					'poster_id' => $poster_id,
 					'title' => $title,
 					'content' => $content,
-					'username' => $username
+					'username' => $username,
+					'posted_time' => $posted_time
 				]);
 			}
 		}
@@ -53,11 +54,11 @@
 		$threads = [];
 
 		// fetch all posts
-		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
+		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username, posted_time FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
 			
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time);
 
 
 			// fetch all posts and store in an array $threads
@@ -67,7 +68,8 @@
 					'poster_id' => $poster_id,
 					'title' => $title,
 					'content' => $content,
-					'username' => $username
+					'username' => $username,
+					'posted_time' => $posted_time
 				]);
 			}
 		}
@@ -136,7 +138,7 @@
 							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
 						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
-						<p class="post-info">submitted 3 hours ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
+						<p class="post-info">submitted on <?=$thread['posted_time']?> ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
 						<p class="post-stats">40 replies, 1543 views</p>
 					</div>
 

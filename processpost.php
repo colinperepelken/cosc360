@@ -44,15 +44,13 @@
 
 		    
 		    if ($userExists) {
-		    	echo $poster_id;
-		    	echo $title;
-		    	echo $content;
+		    	$posted_time = date("Y/m/d");
 
 				// INSERT NEW USER INTO DB
-		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content) VALUES (?,?,?)")) {
+		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content, posted_time) VALUES (?,?,?,?)")) {
 
 		    		// bind params
-		    		$stmt->bind_param("sss", $poster_id, $title, $content); 
+		    		$stmt->bind_param("ssss", $poster_id, $title, $content, $posted_time); 
 		    		// execute insert
 		    		$stmt->execute();
 		    		$stmt->close();

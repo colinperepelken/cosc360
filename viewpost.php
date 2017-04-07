@@ -9,12 +9,12 @@
 		$loggedIn = true;
 
 		// get the id of the logged in user and check if they are admin
-	    if ($stmt = $mysqli->prepare("SELECT user_id, is_admin FROM users WHERE username=?")) {
+	    if ($stmt = $mysqli->prepare("SELECT user_id, is_admin, location, bio, profile_image_path FROM users WHERE username=?")) {
 
 	    	// bind parameters
 	    	$stmt->bind_param("s", $username);
 	    	$stmt->execute();
-	    	$stmt->bind_result($user_id, $is_admin);
+	    	$stmt->bind_result($user_id, $is_admin, $logged_in_location, $logged_in_bio, $logged_in_image);
 	    	$stmt->fetch();
 		    $stmt->close(); // close the statement
 	    } 
@@ -26,13 +26,13 @@
 		$thread_id = $_GET['id'];
 
 		// query DB for thread info
-		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content, profile_image_path, username, location, bio FROM threads, users WHERE thread_id=? AND user_id=poster_id;")) { // TODO: add posted_time
+		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content, profile_image_path, username, location, bio, posted_time FROM threads, users WHERE thread_id=? AND user_id=poster_id;")) { // TODO: add posted_time
 		
 			$stmt->bind_param("i", $thread_id);
 
 			$stmt->execute();
 
-			$stmt->bind_result($poster_id, $title, $content, $profile_image_path, $username, $location, $bio);
+			$stmt->bind_result($poster_id, $title, $content, $profile_image_path, $username, $location, $bio, $posted_time);
 
 			$thread = []; // store the information associated with this thread in obj
 
@@ -44,6 +44,7 @@
 				$thread['username'] = $username;
 				$thread['location'] = $location;
 				$thread['bio'] = $bio;
+				$thread['posted_time'] = $posted_time;
 				break; // should only return one thread... but just in case
 			}
 			$stmt->close();
@@ -68,7 +69,8 @@
    		<link rel="stylesheet" href="style/simpleform.css" />
    		<link rel="stylesheet" href="style/viewpost.css" />
    		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-
+   		<script src="http://code.jquery.com/jquery-latest.min.js"
+        type="text/javascript"></script><!-- jquery for AJAX -->
    		<!-- https://www.tinymce.com/download/ -->
 		<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
  		<script>
@@ -80,7 +82,54 @@
   				image_caption: true
  			});
   		</script>
-  		<script src="js/togglecomments.js" type="text/javascript"></script>
+  		<script type="text/javascript">
+  			function post() {
+
+  				var reply = tinyMCE.activeEditor.getContent({format : 'raw'});
+  				var name = document.getElementById("reply-username").value;
+  				var location = document.getElementById("reply-location").value;
+  				var bio = document.getElementById("reply-bio").value;
+  				var image = document.getElementById("reply-image").value;
+  				var parent_id = document.getElementById("parent-id").value;
+
+  				console.log(reply);
+  				console.log(parent_id);
+  				console.log("test")
+
+  				if (reply && name) {
+  					$.ajax
+  					({
+  						type: 'post',
+  						url: 'processreply.php',
+  						data:
+  						{
+  							content:reply,
+  							parentid:parent_id,
+  							username:name,
+  							location:location,
+  							bio:bio,
+  							image:image
+  						},
+  						success: function (response) 
+  						{
+  							var center = document.getElementById("center");
+  							var toInsert = response+document.getElementById("new-comment");
+  							//center.insertBefore(response, center.childNodes[center.childNodes.length-1]);
+  							center.innerHTML = center.innerHTML + response;
+  							//document.getElementById("mytextarea").value = "";
+  							tinymce.init({
+				    			selector: '#mytextarea',
+				    			plugins: "image",
+				  				menubar: "insert",
+				  				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+				  				image_caption: true
+			 				});
+  						}
+  					});
+  				}
+  				return false;
+  			}
+  		</script>
 	</head>
 	<body>
 		<header>
@@ -132,7 +181,7 @@
 					<!-- the reply content -->
 					<div class="reply-content">
 						<h3><?=$thread['title']?></h3>
-						<p class="reply-date"><i>2017-02-17 3:20PM</i></p>
+						<p class="reply-date"><i><?=$thread['posted_time']?></i></p>
 						<p><?=$thread['content']?></p>
 					</div>
 				</div>
@@ -140,21 +189,21 @@
 				<?php
 					// fetch all thread replies from DB
 					$replies = [];
-					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, profile_image_path, location, bio FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
+					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, profile_image_path, location, bio, posted_time FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
 						$stmt->bind_param("s", $thread_id);
 						$stmt->execute();
 
-						$stmt->bind_result($username, $poster_id, $content, $profile_image_path, $location, $bio);
+						$stmt->bind_result($username, $poster_id, $content, $profile_image_path, $location, $bio, $posted_time);
 
 						while ($stmt->fetch()) {
-							echo $content2;
 							array_push($replies, [
 								'username' => $username,
 								'poster_id' => $poster_id,
 								'content' => $content,
 								'profile_image_path' => $profile_image_path,
 								'location' => $location,
-								'bio' => $bio
+								'bio' => $bio,
+								'posted_time' => $posted_time
 							]);
 						}
 					}
@@ -175,16 +224,22 @@
 							</ul>
 						</div>
 						<div class="reply-content">
-							<p class="reply-date"><i>2017-02-17 5:43PM</i></p>
+							<p class="reply-date"><i><?=$reply['posted_time']?></i></p>
 							<p><?=$reply['content']?></p>
 						</div>
 					</div>
 				<?php endforeach ?>
+				<div id="new-comment" class="reply-entry">
+				</div>
 				<?php if ($loggedIn): ?>
 					<div class="reply-entry">
-						<form id="post-form" method="post" action="processreply.php">
+						<form id="post-form" method="post" action="" onsubmit="return post();">
 							<textarea id="mytextarea" form="post-form" name="content" class="required"></textarea>
-							<input type="hidden" name="parent-id" value="<?=$thread_id?>" />
+							<input type="hidden" id="parent-id" name="parentid" value="<?=$thread_id?>" />
+							<input type="hidden" id="reply-username" name="username" value="<?=$_SESSION['username']?>"/>
+							<input type="hidden" id="reply-image" name="image" value="<?=$logged_in_image?>"/>
+							<input type="hidden" id="reply-location" name="location" value="<?=$logged_in_location?>"/>
+							<input type="hidden" id="reply-bio" name="bio" value="<?=$logged_in_bio?>"/>
 							<button type="Submit" form="post-form" value="Submit">Add a Reply</button>
 						</form>
 					</div>
