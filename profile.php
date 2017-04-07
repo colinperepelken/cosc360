@@ -25,12 +25,12 @@
 		$user_id = $_GET['id'];
 
 		// fetch user from DB with this id
-	    if ($stmt = $mysqli->prepare("SELECT username, email, profile_image_path FROM users WHERE user_id=?")) {
+	    if ($stmt = $mysqli->prepare("SELECT username, email, profile_image_path, location, bio FROM users WHERE user_id=?")) {
 
 	    	// bind parameters
 	    	$stmt->bind_param("i", $user_id);
 	    	$stmt->execute();
-	    	$stmt->bind_result($username, $email, $profile_image_path);
+	    	$stmt->bind_result($username, $email, $profile_image_path, $location, $bio);
 
 
 		    while ($stmt->fetch()) {
@@ -74,7 +74,7 @@
 					<?php if ($is_admin == 1): ?>
 						<li><a href="admin.php">Admin Controls</a></li>
 					<?php endif ?>
-					<li><a href="profile.php?id=<?=$user_id?>"><?=$_SESSION['username']?></a></li>
+					<li><a href="profile.php?id=<?=$logged_in_user_id?>"><?=$_SESSION['username']?></a></li>
 					<li><a href="logout.php">Logout</a></li>
 				<?php else: ?>
 					<li><a href="login.html">Login</a></li>
@@ -109,14 +109,21 @@
 						    <input type="file" name="fileToUpload" id="fileToUpload">
 						    <input type="submit" value="Upload Image" name="submit">
 						</form>
-					<? endif ?>
-					<ul>
-						<li>Location: Kelowna, BC</li>
-						<li>Email: <?=$email?></li>
-						<li>Car(s): 1989 325i Convertible</li>
-						<li>colinbernard.ca</li>
-						<li><button type="button">Message</button></li>
-					</ul>
+						<form action="updateprofile.php" method="post">
+							<fieldset>
+								Location:<input type="text" name="location" value="<?=$location?>" />
+								Bio:<input type="text" name="bio" value="<?=$bio?>" />
+								<input type="submit" value="Update Info" name="submit"/>
+							</fieldset>
+						</form>
+					<?php else: ?>
+						<ul>
+							<li>Location: <?=$location?></li>
+							<li>Email: <?=$email?></li>
+							<li>Bio: <?=$bio?></li>
+							<li><button type="button">Message</button></li>
+						</ul>
+					<?php endif ?>
 				</div>
 				<div id="profile-statistics">
 					<h3>Statistics</h3>

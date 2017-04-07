@@ -25,7 +25,7 @@
 	    if ($is_admin == 1) { // if the user is logged in and an admin
 
 
-	    	if (isset($_GET['ban'])) {
+	    	if (isset($_GET['ban'])) { // banning a user
 	    		$user_to_ban = $_GET['ban'];
 	    		if ($stmt = $mysqli->prepare("UPDATE users SET is_banned=1 WHERE user_id=?")) {
 	    			$stmt->bind_param("i", $user_to_ban);
@@ -33,7 +33,7 @@
 	    		}
 	    	}
 
-	    	if (isset($_GET['unban'])) {
+	    	if (isset($_GET['unban'])) { // unbanning a user
 	    		$user_to_unban = $_GET['unban'];
 	    		if ($stmt = $mysqli->prepare("UPDATE users SET is_banned=0 WHERE user_id=?")) {
 	    			$stmt->bind_param("i", $user_to_unban);
@@ -41,25 +41,88 @@
 	    		}
 	    	}
 
+	    	if (isset($_GET['remove'])) { // removing a thread
+	    		$threadToRemove = $_GET['remove'];
+	    		if ($stmt = $mysqli->prepare("DELETE FROM threads WHERE thread_id=?")) {
+	    			$stmt->bind_param("i", $threadToRemove);
+	    			$stmt->execute();
+	    		}
+	    	}
 
-	    	// get list of all users
 	    	$users = [];
-	    	if ($stmt = $mysqli->prepare("SELECT username, is_banned, is_admin, email, user_id FROM users")) {
-	    	
-	    		$stmt->execute();
-	    		$stmt->bind_result($username, $is_banned, $is_admin, $email, $user_id);
 
-	    		while ($stmt->fetch()) {
-	    			array_push($users, [
-	    				'username' => $username,
-	    				'is_banned' => $is_banned,
-	    				'is_admin' => $is_admin,
-	    				'email' => $email,
-	    				'user_id' => $user_id
-	    			]);
+	    	if (isset($_GET['username'])) { // searching for a user
+	    		$userToSearch = $_GET['username'];
+	    		if ($stmt = $mysqli->prepare("SELECT username, is_banned, is_admin, email, user_id FROM users WHERE username LIKE ?")) {
+	    			$userToSearch = '%'.$userToSearch.'%';
+	    			$stmt->bind_param("s", $userToSearch);
+	    			$stmt->execute();
+	    			$stmt->bind_result($username, $is_banned, $is_admin, $email, $user_id);
+
+		    		while ($stmt->fetch()) {
+		    			array_push($users, [
+		    				'username' => $username,
+		    				'is_banned' => $is_banned,
+		    				'is_admin' => $is_admin,
+		    				'email' => $email,
+		    				'user_id' => $user_id
+		    			]);
+		    		}
+	    		}
+	    	} else { // get list of ALL users
+	    		if ($stmt = $mysqli->prepare("SELECT username, is_banned, is_admin, email, user_id FROM users")) {
+	    	
+		    		$stmt->execute();
+		    		$stmt->bind_result($username, $is_banned, $is_admin, $email, $user_id);
+
+		    		while ($stmt->fetch()) {
+		    			array_push($users, [
+		    				'username' => $username,
+		    				'is_banned' => $is_banned,
+		    				'is_admin' => $is_admin,
+		    				'email' => $email,
+		    				'user_id' => $user_id
+		    			]);
+		    		}
+
+	    		}
+	    	}
+
+	    	$threads = [];
+	    	if (isset($_GET['title'])) { // seaching for a thread title
+
+	    		$titleToSearch = $_GET['title'];
+	    		if ($stmt = $mysqli->prepare("SELECT title, thread_id FROM threads WHERE title LIKE ?")) {
+	    			$titleToSearch = '%'.$titleToSearch.'%';
+	    			$stmt->bind_param("s", $titleToSearch);
+	    			$stmt->execute();
+	    			$stmt->bind_result($title, $thread_id);
+
+	    			while ($stmt->fetch()) {
+	    				array_push($threads, [
+	    					'thread_id' => $thread_id,
+	    					'title' => $title
+	    				]);
+	    			}
 	    		}
 
+	    	} else { // show ALL threads
+	    		if ($stmt = $mysqli->prepare("SELECT title, thread_id FROM threads")) {
+	    			$stmt->execute();
+	    			$stmt->bind_result($title, $thread_id);
+
+	    			while ($stmt->fetch()) {
+	    				array_push($threads, [
+	    					'thread_id' => $thread_id,
+	    					'title' => $title
+	    				]);
+	    			}
+	    		}
 	    	}
+
+
+
+
 	    } else {
 	    	header('Location: home.php');
 	    }
@@ -79,7 +142,16 @@
 	<body>
 		<h1>Admin Controls</h1>
 		<p><a href="home.php">Back to Home</a></p>
+		<form method="get" action="admin.php">
+			<input type="text" name="username" placeholder="search for a username"/>
+			<input type="text" name="title" placeholder="search for a thread title"/>
+			<input type="submit" value="Search" name="submit"/>
+		</form>
+		<br>
+		<hr>
+		<br>
 		<table>
+			<caption>Users</caption>
 			<tr>
 				<th>user_id</th>
 				<th>username</th>
@@ -99,6 +171,23 @@
 					<?php else: ?>
 						<td><a href="admin.php?unban=<?=$user['user_id']?>">unban user</a></td>
 					<?php endif ?>
+				</tr>
+			<?php endforeach ?>
+		</table>
+		<br>
+		<hr>
+		<br>
+		<table>
+			<caption>Threads</caption>
+			<tr>
+				<th>thread_id</th>
+				<th>title</th>
+			</tr>
+			<?php foreach ($threads as $thread): ?>
+				<tr>
+					<td><?=$thread['thread_id']?></td>
+					<td><?=$thread['title']?></td>
+					<td><a href="admin.php?remove=<?=$thread['thread_id']?>">Remove</a></td>
 				</tr>
 			<?php endforeach ?>
 		</table>

@@ -26,13 +26,13 @@
 		$thread_id = $_GET['id'];
 
 		// query DB for thread info
-		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content, profile_image_path, username FROM threads, users WHERE thread_id=? AND user_id=poster_id;")) { // TODO: add posted_time
+		if ($stmt = $mysqli->prepare("SELECT poster_id, title, content, profile_image_path, username, location, bio FROM threads, users WHERE thread_id=? AND user_id=poster_id;")) { // TODO: add posted_time
 		
 			$stmt->bind_param("i", $thread_id);
 
 			$stmt->execute();
 
-			$stmt->bind_result($poster_id, $title, $content, $profile_image_path, $username);
+			$stmt->bind_result($poster_id, $title, $content, $profile_image_path, $username, $location, $bio);
 
 			$thread = []; // store the information associated with this thread in obj
 
@@ -42,6 +42,8 @@
 				$thread['content'] = $content;
 				$thread['profile_image_path'] = $profile_image_path;
 				$thread['username'] = $username;
+				$thread['location'] = $location;
+				$thread['bio'] = $bio;
 				break; // should only return one thread... but just in case
 			}
 			$stmt->close();
@@ -122,8 +124,8 @@
 						<ul>
 							<li><a href="profile.php?id=<?=$thread['poster_id']?>"><b><?=$thread['username']?></b></a></li>
 							<li><img src="<?=$thread['profile_image_path']?>" width="80px" height="80px" class="post-profile-picture" alt="profile picture not set"/></li>
-							<li>Kelowna, BC</li>
-							<li>1987 325is</li>
+							<li><?=$thread['location']?></li>
+							<li><?=$thread['bio']?></li>
 							<li><button type="button">Message</button></li>
 						</ul>
 					</div>
@@ -138,11 +140,11 @@
 				<?php
 					// fetch all thread replies from DB
 					$replies = [];
-					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, profile_image_path FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
+					if ($stmt = $mysqli->prepare("SELECT username, poster_id, content, profile_image_path, location, bio FROM thread_replies, users WHERE poster_id=user_id AND thread_id=?")) { // TODO: add posted_time
 						$stmt->bind_param("s", $thread_id);
 						$stmt->execute();
 
-						$stmt->bind_result($username, $poster_id, $content, $profile_image_path);
+						$stmt->bind_result($username, $poster_id, $content, $profile_image_path, $location, $bio);
 
 						while ($stmt->fetch()) {
 							echo $content2;
@@ -150,7 +152,9 @@
 								'username' => $username,
 								'poster_id' => $poster_id,
 								'content' => $content,
-								'profile_image_path' => $profile_image_path
+								'profile_image_path' => $profile_image_path,
+								'location' => $location,
+								'bio' => $bio
 							]);
 						}
 					}
@@ -165,8 +169,8 @@
 							<ul>
 								<li><a href=""><b><?=$reply['username']?></b></a></li>
 								<li><img src="<?=$reply['profile_image_path']?>" width="80px" height="80px" class="post-profile-picture" alt="profile picture not set"/></li>
-								<li>Sometown, BC</li>
-								<li>1989 325ic</li>
+								<li><?=$reply['location']?></li>
+								<li><?=$reply['bio']?></li>
 								<li><button type="button">Message</button></li>
 							</ul>
 						</div>
