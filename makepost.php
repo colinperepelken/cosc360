@@ -18,6 +18,24 @@
 		    $stmt->close(); // close the statement
 	    } 
 	}
+
+	// get list of forums
+	$forums = [];
+	if ($stmt = $mysqli->prepare("SELECT forum_id, forum_name FROM forums")) {
+		$stmt->execute();
+		$stmt->bind_result($forum_id, $forum_name);
+
+		while ($stmt->fetch()) {
+			array_push($forums, [
+				'forum_id' => $forum_id,
+				'forum_name' => $forum_name
+			]);
+		}
+	}
+
+	if (!$loggedIn) {
+		header('Location: home.php');
+	}
 ?>
 <!DOCTYPE html>
 <html>
@@ -80,9 +98,16 @@
 			</article>
 			<article id="center">
 				<div class="container">
-					<h2>Posting in Engines/M20</h2>
+					<h2>Make a new post</h2>
 					<form method="post" action="processpost.php" id="post-form">
 						<fieldset>
+							<label><b>Forum</b></label>
+							<select name="forum_id">
+								<?php foreach ($forums as $forum): ?>
+									<option value="<?=$forum['forum_id']?>"><?=$forum['forum_name']?></option>
+								<?php endforeach ?>
+							</select>
+							<br>
 							<label><b>Title</b></label>
 							<input type="text" name="title" id="title" class="required"/>
 

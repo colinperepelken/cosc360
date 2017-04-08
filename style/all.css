@@ -182,3 +182,7 @@ footer p {
 	color: black;
 }
 
+
+#forum-links {
+	display: none;
+}

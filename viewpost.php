@@ -92,9 +92,6 @@
   				var image = document.getElementById("reply-image").value;
   				var parent_id = document.getElementById("parent-id").value;
 
-  				console.log(reply);
-  				console.log(parent_id);
-  				console.log("test")
 
   				if (reply && name) {
   					$.ajax
@@ -112,18 +109,11 @@
   						},
   						success: function (response) 
   						{
-  							var center = document.getElementById("center");
-  							var toInsert = response+document.getElementById("new-comment");
-  							//center.insertBefore(response, center.childNodes[center.childNodes.length-1]);
-  							center.innerHTML = center.innerHTML + response;
-  							//document.getElementById("mytextarea").value = "";
-  							tinymce.init({
-				    			selector: '#mytextarea',
-				    			plugins: "image",
-				  				menubar: "insert",
-				  				toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-				  				image_caption: true
-			 				});
+  							var center = document.getElementById("center-container");
+
+  							center.innerHTML = center.innerHTML + response; // add new comment
+
+  							tinyMCE.activeEditor.setContent(''); // clear text area
   						}
   					});
   				}
@@ -166,6 +156,7 @@
 				</div>
 			</article>
 			<article id="center">
+				<div id="center-container">
 				<!-- the original thread post/entry -->
 				<div class="reply-entry">
 					<!-- profile/poster information -->
@@ -229,7 +220,6 @@
 						</div>
 					</div>
 				<?php endforeach ?>
-				<div id="new-comment" class="reply-entry">
 				</div>
 				<?php if ($loggedIn): ?>
 					<div class="reply-entry">
@@ -243,7 +233,6 @@
 							<button type="Submit" form="post-form" value="Submit">Add a Reply</button>
 						</form>
 					</div>
-
 				<?php else: ?>
 					<div class="reply-entry">
 						<p>Login to add a reply...</p>

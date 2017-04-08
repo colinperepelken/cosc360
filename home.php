@@ -21,18 +21,60 @@
 	    } 
 	}
 
+	if (isset($_GET['forum'])) { // user has selected a forum
+		$current_forum_id = $_GET['forum'];
+
+		// get the name of this forum
+		if ($stmt = $mysqli->prepare("SELECT forum_name FROM forums WHERE forum_id=?")) {
+			$stmt->bind_param("i", $current_forum_id);
+			$stmt->execute();
+			$stmt->bind_result($current_forum_name);
+			$stmt->fetch();
+		}
+
+		// posts will be filtered below when pulled from DB
+	}
+
+
+	// get list of forums
+	$forums = [];
+	if ($stmt = $mysqli->prepare("SELECT forum_id, forum_name FROM forums")) {
+		$stmt->execute();
+		$stmt->bind_result($forum_id, $forum_name);
+
+		while ($stmt->fetch()) {
+			array_push($forums, [
+				'forum_id' => $forum_id,
+				'forum_name' => $forum_name
+			]);
+		}
+	}
+
+
 	// if user is searching for a post using a search term
 	if (isset($_GET['search'])) {
 		$search_term = $_GET['search'];
 		$threads = [];
 
-		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username, posted_time FROM threads, users WHERE poster_id=user_id AND title LIKE ? ORDER BY thread_id DESC")) {
+		if (isset($current_forum_name)) { // user if browsing in a forum
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND threads.forum_id=? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
+		} else {
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
+		}
+
+		if ($stmt = $mysqli->prepare($sql)) {
 
 			$search_term = '%'.$search_term.'%';
-			$stmt->bind_param("s", $search_term);
+
+			if (isset($current_forum_id)) {
+				$stmt->bind_param("si", $search_term, $current_forum_id);
+			} else {
+				$stmt->bind_param("s", $search_term);
+			}
+
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id);
 
 
 			// fetch all posts and store in an array $threads
@@ -43,22 +85,33 @@
 					'title' => $title,
 					'content' => $content,
 					'username' => $username,
-					'posted_time' => $posted_time
+					'posted_time' => $posted_time,
+					'forum_name' => $forum_name,
+					'forum_id' => $forum_id
 				]);
 			}
 		}
 
 	} else { // if the user is not searching for a specific post, get them all
 
+		if (isset($current_forum_name)) { // user is browsing in a forum
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=? AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
+		} else {
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
+		}
 
 		$threads = [];
 
 		// fetch all posts
-		if ($stmt = $mysqli->prepare("SELECT thread_id, poster_id, title, content, username, posted_time FROM threads, users WHERE poster_id=user_id ORDER BY thread_id DESC")) {
+		if ($stmt = $mysqli->prepare($sql)) {
+
+			if (isset($current_forum_name)) { // if a forum is specified
+				$stmt->bind_param("i", $current_forum_id);
+			}
 			
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id);
 
 
 			// fetch all posts and store in an array $threads
@@ -69,7 +122,9 @@
 					'title' => $title,
 					'content' => $content,
 					'username' => $username,
-					'posted_time' => $posted_time
+					'posted_time' => $posted_time,
+					'forum_name' => $forum_name,
+					'forum_id' => $forum_id
 				]);
 			}
 		}
@@ -89,6 +144,7 @@
    		<link rel="stylesheet" href="style/all.css" />
    		<link rel="stylesheet" href="style/simpleform.css" />
    		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+   		<script src="js/browseforums.js" type="text/javascript"></script>
 	</head>
 	<body>
 		<header>
@@ -119,7 +175,14 @@
 					<a href="makepost.php"><button type="button">Submit a Post</button></a>
 				<?php endif ?>
 				<br>
-				<p><a href="">Browse Forums</a></p>
+				<p><a href="javascript:toggleForums()" id="forum-toggle">Browse Forums</a></p>
+				<div id="forum-links">
+						<ul>
+							<?php foreach ($forums as $forum): ?>
+								<li><a href="home.php?forum=<?=$forum['forum_id']?>"><?=$forum['forum_name']?></a></li>
+							<?php endforeach ?>
+						</ul>
+					</div>
 				<br>
 				<?php if ($loggedIn): ?>
 					<p><a href="">My Subscribed</a></p>
@@ -129,6 +192,11 @@
 				</div>
 			</article>
 			<article id="center">
+				<?php if (isset($current_forum_name)): ?>
+					<h2>Forum: <?=$current_forum_name?></h2>
+				<?php else: ?>
+					<h2>Forum: all</h2>
+				<?php endif ?>
 				<?php foreach ($threads as $thread): ?> <!-- loop through all posts -->
 
 					<div class="post">
@@ -138,7 +206,7 @@
 							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
 						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
-						<p class="post-info">submitted on <?=$thread['posted_time']?> ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="">Members' Cars</a></h2>
+						<p class="post-info">submitted on <?=$thread['posted_time']?> ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="home.php?forum=<?=$thread['forum_id']?>"><?=$thread['forum_name']?></a></h2>
 						<p class="post-stats">40 replies, 1543 views</p>
 					</div>
 

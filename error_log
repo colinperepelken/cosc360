@@ -383,3 +383,7 @@
 [07-Apr-2017 21:38:10 UTC] PHP Notice:  Undefined index: bio in /home/suhff/public_html/cosc360/viewpost.php on line 169
 [07-Apr-2017 21:38:10 UTC] PHP Notice:  Undefined index: title in /home/suhff/public_html/cosc360/viewpost.php on line 175
 [07-Apr-2017 21:38:10 UTC] PHP Notice:  Undefined index: content in /home/suhff/public_html/cosc360/viewpost.php on line 177
+[08-Apr-2017 03:58:16 UTC] PHP Notice:  Undefined variable: redirect_to_banned in /home/suhff/public_html/cosc360/processlogin.php on line 61
+[08-Apr-2017 04:41:44 UTC] PHP Warning:  mysqli::prepare() expects exactly 1 parameter, 0 given in /home/suhff/public_html/cosc360/home.php on line 104
+[08-Apr-2017 04:41:46 UTC] PHP Warning:  mysqli::prepare() expects exactly 1 parameter, 0 given in /home/suhff/public_html/cosc360/home.php on line 104
+[08-Apr-2017 04:48:48 UTC] PHP Parse error:  syntax error, unexpected 'endforeach' (T_ENDFOREACH) in /home/suhff/public_html/cosc360/makepost.php on line 107

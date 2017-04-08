@@ -12,10 +12,11 @@
 
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-		if (isset($_POST['title']) && isset($_POST['content']) && isset($username)) {
+		if (isset($_POST['title']) && isset($_POST['content']) && isset($username) && isset($_POST['forum_id'])) {
 
 			$title = $_POST['title'];
 			$content = $_POST['content'];
+			$forum_id = $_POST['forum_id'];
 
 
 			$userExists = false;
@@ -47,10 +48,10 @@
 		    	$posted_time = date("Y/m/d");
 
 				// INSERT NEW USER INTO DB
-		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content, posted_time) VALUES (?,?,?,?)")) {
+		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content, posted_time, forum_id) VALUES (?,?,?,?,?)")) {
 
 		    		// bind params
-		    		$stmt->bind_param("ssss", $poster_id, $title, $content, $posted_time); 
+		    		$stmt->bind_param("ssssi", $poster_id, $title, $content, $posted_time, $forum_id); 
 		    		// execute insert
 		    		$stmt->execute();
 		    		$stmt->close();
