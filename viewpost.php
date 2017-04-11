@@ -146,11 +146,8 @@
 					</form>
 					<p><a href="">Advanced Search</a></p>
 				</div>
-				<button type="button">Add a Reply</button>
 				<br>
-				<p><a href="">Browse Forums</a></p>
 				<br>
-				<p><a href="">My Subscribed</a></p>
 				<div id="forum-info">
 					<p>Welcome to R3DLINE, your ultimate source for BMW E30s. Please read our rules and guidelines blah blah blah more forum information stuff</p>
 				</div>
