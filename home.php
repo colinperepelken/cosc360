@@ -35,6 +35,24 @@
 		// posts will be filtered below when pulled from DB
 	}
 
+	if (isset($_GET['upts'])) { // increase points of a thread
+		$upts = $_GET['upts'];
+
+		if ($stmt = $mysqli->prepare("UPDATE threads SET points=points+1 WHERE thread_id=?")) {
+			$stmt->bind_param("i", $upts);
+			$stmt->execute();
+		}
+	}
+
+	if (isset($_GET['dpts'])) { // decrease points of a thread
+		$dpts = $_GET['dpts'];
+
+		if ($stmt = $mysqli->prepare("UPDATE threads SET points=points-1 WHERE thread_id=?")) {
+			$stmt->bind_param("i", $dpts);
+			$stmt->execute();
+		}
+	}
+
 
 	// get list of forums
 	$forums = [];
@@ -57,9 +75,9 @@
 		$threads = [];
 
 		if (isset($current_forum_name)) { // user if browsing in a forum
-			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND threads.forum_id=? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id, points FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND threads.forum_id=? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
 		} else {
-			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id, points FROM threads, users, forums WHERE poster_id=user_id AND title LIKE ? AND forums.forum_id=threads.forum_id ORDER BY thread_id DESC";
 		}
 
 		if ($stmt = $mysqli->prepare($sql)) {
@@ -74,7 +92,7 @@
 
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id, $points);
 
 
 			// fetch all posts and store in an array $threads
@@ -87,7 +105,8 @@
 					'username' => $username,
 					'posted_time' => $posted_time,
 					'forum_name' => $forum_name,
-					'forum_id' => $forum_id
+					'forum_id' => $forum_id,
+					'points' => $points
 				]);
 			}
 		}
@@ -95,9 +114,9 @@
 	} else { // if the user is not searching for a specific post, get them all
 
 		if (isset($current_forum_name)) { // user is browsing in a forum
-			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=? AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id, points FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=? AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
 		} else {
-			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
+			$sql = "SELECT thread_id, poster_id, title, content, username, posted_time, forum_name, forums.forum_id, points FROM threads, users, forums WHERE poster_id=user_id AND threads.forum_id=forums.forum_id ORDER BY thread_id DESC";
 		}
 
 		$threads = [];
@@ -111,7 +130,7 @@
 			
 			$stmt->execute();
 
-			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id);
+			$stmt->bind_result($thread_id, $poster_id, $title, $content, $username, $posted_time, $forum_name, $forum_id, $points);
 
 
 			// fetch all posts and store in an array $threads
@@ -124,7 +143,8 @@
 					'username' => $username,
 					'posted_time' => $posted_time,
 					'forum_name' => $forum_name,
-					'forum_id' => $forum_id
+					'forum_id' => $forum_id,
+					'points' => $points
 				]);
 			}
 		}
@@ -201,9 +221,9 @@
 
 					<div class="post">
 						<div class="post-score">
-							<a href=""><img src="images/arrow_up.png" width="20" height="20"></a>
-							<p>2</p>
-							<a href=""><img src="images/arrow_down.png" width="20" height="20"></a>
+							<a href="home.php?upts=<?=$thread['thread_id']?>"><img src="images/arrow_up.png" width="20" height="20"></a>
+							<p><?=$thread['points']?></p>
+							<a href="home.php?dpts=<?=$thread['thread_id']?>"><img src="images/arrow_down.png" width="20" height="20"></a>
 						</div>
 						<p class="title"><a href="viewpost.php?id=<?=$thread['thread_id']?>"><?=$thread['title']?></a></p>
 						<p class="post-info">submitted on <?=$thread['posted_time']?> ago by <a href="profile.php?id=<?=$thread['poster_id']?>"><?=$thread['username']?></a> in <a href="home.php?forum=<?=$thread['forum_id']?>"><?=$thread['forum_name']?></a></h2>

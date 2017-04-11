@@ -48,10 +48,12 @@
 		    	$posted_time = date("Y/m/d");
 
 				// INSERT NEW USER INTO DB
-		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content, posted_time, forum_id) VALUES (?,?,?,?,?)")) {
+		    	if ($stmt = $mysqli->prepare("INSERT INTO threads(poster_id, title, content, posted_time, forum_id, points) VALUES (?,?,?,?,?,?)")) {
+
+		    		$points = 0; // initial points 0
 
 		    		// bind params
-		    		$stmt->bind_param("ssssi", $poster_id, $title, $content, $posted_time, $forum_id); 
+		    		$stmt->bind_param("ssssii", $poster_id, $title, $content, $posted_time, $forum_id, $points); 
 		    		// execute insert
 		    		$stmt->execute();
 		    		$stmt->close();
